@@ -19,12 +19,12 @@ export default function Sidebar() {
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     const toggleRobots = () => {
-    const next = !showRobots;
-    setShowRobots(next);
-    if (next) {
-        setHasFetched(false); 
+        const next = !showRobots;
+        setShowRobots(next);
+        if (next) {
+            setHasFetched(false);
+        }
     }
-}
 
     useEffect(() => {
         function handleUserChange() {
@@ -100,9 +100,15 @@ export default function Sidebar() {
     }
 
     const handleSelectRobot = (robot) => {
-        setSelectedRobot(robot); // เก็บทั้ง object หรือเฉพาะ id ก็ได้
-        setIsSidebarOpen(false); // ปิด sidebar
+        setSelectedRobot(robot);
+        setIsSidebarOpen(false);
     }
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.dispatchEvent(new Event("userChanged"));
+        router.push("/");
+    };
 
     return (
         <div className="container">
@@ -181,13 +187,12 @@ export default function Sidebar() {
                                 <h3>{user?.name ?? "ชื่อผู้ใช้"}</h3>
                             </div>
                         </div>
-                    </div>
 
-                    <Link href="/">
-                        <span className="material-symbols-outlined">logout</span>
-                        <div className="tooltip">Logout</div>
-                        <h3>Logout</h3>
-                    </Link>
+                        <button onClick={handleLogout} className="logout-button">
+                            <span className="material-symbols-outlined">logout</span>
+                            <h3>Logout</h3>
+                        </button>
+                    </div>
                 </div>
             </aside>
         </div>
