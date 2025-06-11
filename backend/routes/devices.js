@@ -82,11 +82,11 @@ router.post("/generate-token", async (req, res) => {
     );
 
     await pool.query(`
-  INSERT INTO robots (token)
-  VALUES ($1)
-  ON CONFLICT (token)
-  DO NOTHING;
-`, [token]);
+      INSERT INTO robots (device_id, token)
+      VALUES ($1, $2)
+      ON CONFLICT (device_id)
+      DO UPDATE SET token = EXCLUDED.token;
+    `, [device_id, token]);
 
 
     res.json({
@@ -205,5 +205,7 @@ setInterval(async () => {
     console.error("Error checking device statuses:", err);
   }
 }, CHECK_INTERVAL);
+
+
 
 module.exports = router;

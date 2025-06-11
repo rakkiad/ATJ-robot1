@@ -54,7 +54,7 @@ export default function HistoryPage() {
 
     return (
         <main className="main-history">
-            <h2 className="title">ประวัติการทำงาน</h2>
+            <h2 className="title-history">ประวัติการทำงาน</h2>
             {selectedRobot ? (
                 <div className="selected-robot-info">
                     <p>หุ่นยนต์ที่เลือก: {selectedRobot.robot_name}</p>

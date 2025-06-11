@@ -5,14 +5,17 @@ import "@/styles/settings.css";
 export default function SettingsPage() {
   const imgRef = useRef<HTMLImageElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [profileImage, setProfileImage] = useState('/default-profile.png');
   const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('example@email.com'); // ตั้งค่าเริ่มต้นได้จากระบบ
+  const [email, setEmail] = useState('example@email.com');
   const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -49,10 +52,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="right-section">
-          <button
-            className="upload-button"
-            onClick={() => fileInputRef.current?.click()}
-          >
+          <button className="upload-button" onClick={() => fileInputRef.current?.click()}>
             อัพโหลดรูปภาพ
           </button>
           <input
@@ -83,27 +83,44 @@ export default function SettingsPage() {
                 placeholder="เบอร์โทรศัพท์ของคุณ"
               />
             </div>
+
             <div className="column">
               <label>รหัสผ่านใหม่</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="รหัสผ่านใหม่ของคุณ"
-              />
+              <div className="password-wrapper">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="รหัสผ่านใหม่ของคุณ"
+                />
+                <span
+                  className="material-symbols-outlined toggle-icon"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  {showNewPassword ? "visibility_off" : "visibility"}
+                </span>
+              </div>
             </div>
 
             <div className="column">
               <label>ยืนยันรหัสผ่าน</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="ยืนยันรหัสผ่านใหม่ของคุณ"
-              />          
+              <div className="password-wrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="ยืนยันรหัสผ่านใหม่ของคุณ"
+                />
+                <span
+                  className="material-symbols-outlined toggle-icon"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? "visibility_off" : "visibility"}
+                </span>
+              </div>
               {errorMessage && <p className="error-message">{errorMessage}</p>}
             </div>
-            
+
             <div className="column">
               <label>Email</label>
               <input
@@ -114,8 +131,6 @@ export default function SettingsPage() {
                 style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
               />
             </div>
-
-           
           </div>
 
           <button className="save-button" onClick={handleSaveChanges}>Save Changes</button>

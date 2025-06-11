@@ -1,17 +1,18 @@
-"use client"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import "@/styles/sidebar.css"
-import { useSelectedRobot } from "@/app/contexts/SelectedRobotContext";
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import "@/styles/sidebar.css";
+import { useSelectedRobot, RobotInfo } from "@/app/contexts/SelectedRobotContext";
 
 export default function Sidebar() {
     const pathname = usePathname();
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showRobots, setShowRobots] = useState(false);
-    const [user, setUser] = useState(null);
-    const [robots, setRobots] = useState([]);
+    const [user, setUser] = useState<any>(null);
+    const [robots, setRobots] = useState<RobotInfo[]>([]);
     const [loadingRobots, setLoadingRobots] = useState(false);
     const [hasFetched, setHasFetched] = useState(false);
     const { setSelectedRobot } = useSelectedRobot();
@@ -24,7 +25,7 @@ export default function Sidebar() {
         if (next) {
             setHasFetched(false);
         }
-    }
+    };
 
     useEffect(() => {
         function handleUserChange() {
@@ -54,7 +55,7 @@ export default function Sidebar() {
             setLoadingRobots(true);
 
             try {
-                const res = await fetch('http://localhost:5000/robot/my-robots', {
+                const res = await fetch("http://localhost:5000/robot/my-robots", {
                     method: "GET",
                     signal: controller.signal,
                     headers: {
@@ -70,7 +71,7 @@ export default function Sidebar() {
 
                 const data = await res.json();
 
-                if (data.success) {
+                if (data.success && Array.isArray(data.robots)) {
                     setRobots(data.robots);
                 } else {
                     console.warn("API ตอบกลับไม่สำเร็จ", data);
@@ -78,7 +79,7 @@ export default function Sidebar() {
                 }
 
                 setHasFetched(true);
-            } catch (err) {
+            } catch (err: any) {
                 if (err.name !== "AbortError") {
                     console.error("Fetch robots ผิดพลาด:", err);
                 }
@@ -91,18 +92,19 @@ export default function Sidebar() {
         fetchRobots();
 
         return () => controller.abort();
-
     }, [user, showRobots, hasFetched]);
 
-    const goToTokenPage = (e) => {
+    const goToTokenPage = (e: React.MouseEvent) => {
         e.stopPropagation();
         router.push("/token");
-    }
+    };
 
-    const handleSelectRobot = (robot) => {
+    const handleSelectRobot = (robot: RobotInfo) => {
         setSelectedRobot(robot);
         setIsSidebarOpen(false);
-    }
+        if (pathname !== "/home") router.push("/home");
+    };
+
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -122,7 +124,7 @@ export default function Sidebar() {
                         <img src="/logomine1.png" alt="ATJ Robot Logo" />
                         <h2>ATJ <span className="danger">Robot</span></h2>
                     </div>
-                    <div className="close" id="close-btn" onClick={toggleSidebar}>
+                    <div className="close" onClick={toggleSidebar}>
                         <span className="material-symbols-outlined">close</span>
                     </div>
                 </div>
@@ -168,8 +170,12 @@ export default function Sidebar() {
                                 {loadingRobots ? (
                                     <p>กำลังโหลด...</p>
                                 ) : robots.length > 0 ? (
-                                    robots.map(robot => (
-                                        <p key={robot.id} className="robot-item" onClick={() => handleSelectRobot(robot)}>
+                                    robots.map((robot) => (
+                                        <p
+                                            key={robot.id}
+                                            className="robot-item"
+                                            onClick={() => handleSelectRobot(robot)}
+                                        >
                                             {robot.robot_name}
                                         </p>
                                     ))

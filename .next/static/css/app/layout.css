@@ -195,7 +195,8 @@ b {
 /* ======== Sidebar Layout ======== */
 aside {
   position: fixed;
-  min-width: 15vw;
+   width: 250px;
+  max-width: 100%;
   height: 100vh;
 }
 
@@ -284,26 +285,6 @@ aside .sidebar a:hover span {
   margin-left: 1rem;
 }
 
-/* .sidebar-footer {
-  margin: 2rem 0 1rem 0;
-  padding-top: 1rem;
-  border-top: 1px solid #ccc;
-  color: #333;
-  font-size: 0.9rem;
-} */
-
-.user-profile {
-  /* text-decoration: none; */
-  display: flex;
-  color: var(--color-info-dark);
-  margin-left: 2rem;
-  gap: 1rem;
-  align-items: center;
-  position: relative;
-  height: 3rem;
-  transition: all 300ms ease;
-  margin-bottom: 1rem;
-}
 
 .profile-pic {
   width: 2rem;
@@ -378,6 +359,33 @@ aside .sidebar a .tooltip {
   color: #fff;
 }
 
+.robot-list .robot-item {
+  display: block;            
+  max-width: 100%;           
+  white-space: nowrap;       
+  overflow: hidden;           
+  text-overflow: ellipsis;    
+  cursor: pointer;            
+}
+
+.robot-item {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.robot-item:hover {
+  background-color: #f0f0f0;
+}
+
+
 .robot-list p{
   cursor: pointer;
   margin-top: 9px;
@@ -389,6 +397,61 @@ aside .sidebar a .tooltip {
   color: var(--color-primary);
 }
 
+.sidebar button{
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 1rem;
+
+}
+
+.sidebar .sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  margin-left: 10px;
+  position: absolute;
+  bottom: 4rem;
+}
+
+.user-profile {
+  margin-left: 27px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logout {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
+
+}
+
+.logout-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+   margin-left:29px ;
+}
+
+.sidebar button:hover {
+  color: var(--color-primary);
+}
+
+.logout-button h3{
+  font-size: 0.8rem;
+  font-weight: 500;
+}
 
 
 @media screen and (max-width: 1200px) {

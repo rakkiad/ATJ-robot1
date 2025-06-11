@@ -41,8 +41,8 @@ export default function Home() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Registration failed");
 
-        alert("Register success");
-        setStep("login");
+        alert("ลงทะเบียนสำเร็จ");
+        setStep("login"); 
       } catch (error: any) {
         alert(error.message);
       }
@@ -62,7 +62,7 @@ export default function Home() {
         console.log("Login response:", data);
         if (!res.ok) throw new Error(data.message || "Login failed");
 
-        // ✅ แก้ตรงนี้ให้ใช้ tokenJWT แทน
+        // แก้ตรงนี้ให้ใช้ tokenJWT แทน
         const token = data.tokenJWT;
         if (!token) throw new Error("No token received from server");
         localStorage.setItem("token", token);
